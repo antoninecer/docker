@@ -1,0 +1,6 @@
+
+docker run -d --restart unless-stopped --name blog_tonda -e url=http://tonda.nanavsi.info -p 3001:2368 -v /opt/docker/blog/tonda:/var/lib/ghost/content ghost
+
+docker run -d --restart unless-stopped --name blog_vera -e url=http://vera.nanavsi.info -p 3002:2368 -v /opt/docker/blog/tonda:/var/lib/ghost/content ghost
+
+https://tonda.nanavsi.info/ghost/#/setup/one

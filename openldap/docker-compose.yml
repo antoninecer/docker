@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+  openldap:
+    image: osixia/openldap:latest
+    container_name: openldap
+    hostname: openldap
+    ports: 
+      - "389:389"
+      - "636:636"
+    volumes:
+      - /opt/docker/openldap/data/certificates:/container/service/slapd/assets/certs
+      - /opt/docker/openldap/data/slapd/database:/var/lib/ldap
+      - /opt/docker/openldap/data/slapd/config:/etc/ldap/slapd.d
+    environment: 
+      - LDAP_ORGANISATION=trebestovice
+      - LDAP_DOMAIN=trebestovice.info
+      - LDAP_ADMIN_USERNAME=administrator
+      - LDAP_ADMIN_PASSWORD=admin
+      - LDAP_CONFIG_PASSWORD=pass_config
+      - "LDAP_BASE_DN=dc=trebestovice,dc=info"
+      - LDAP_TLS_CRT_FILENAME=server.crt
+      - LDAP_TLS_KEY_FILENAME=server.key
+      - LDAP_TLS_CA_CRT_FILENAME=trebestovice.info.ca.crt
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=ldap
+      - LDAP_READONLY_USER_PASSWORD=Connect123
+    networks:
+      - openldap
+  
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    hostname: phpldapadmin
+    ports: 
+      - "8080:80"
+    environment: 
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap
+      - PHPLDAPADMIN_HTTPS=false
+    depends_on:
+      - openldap
+    networks:
+      - openldap
+
+networks:
+  openldap:
+    driver: bridge

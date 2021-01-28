@@ -1,0 +1,25 @@
+version: '3.2'
+
+services:
+   db:
+      image: mysql:8.0
+      container_name: appsDB
+      restart: always
+      volumes:
+       - /opt/docker/mysql/data:/var/lib/mysql
+      ports:
+       - '3306:3306'
+      environment:
+        MYSQL_ROOT_PASSWORD: 3a87283
+
+   app:
+      depends_on:
+       - db
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      restart: always
+      ports:
+       - '8088:80'
+      environment:
+        PMA_HOST: db
+        
