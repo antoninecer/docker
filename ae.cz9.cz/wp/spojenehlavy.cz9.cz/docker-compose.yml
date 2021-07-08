@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+   wordpress:
+      image: wordpress:latest
+      ports:
+         - "8004:80"
+      restart: always
+      environment:
+         WORDPRESS_DB_HOST: MySQL-shared:3306
+         WORDPRESS_DB_USER: ${MYSQL_USER}
+         WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+         WORDPRESS_DB_NAME: spojenehlavy
+         DOCKER_COMPOSE_YML_LOCATION: ${PWD}
+      volumes:
+         - ./wp-content:/var/www/html/wp-content
+      container_name: spojenehlavy_wp
+
+networks:
+    default:
+        external:
+# todle nemenit !!!! je to ve stejnem prostoru jako spojene hlavy, je treba si na to zvyknout
+            name: spojenehlavycz9cz_default
+
+

@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./db_data:/var/lib/mysql # persist database data inside docker storage
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: Popokatepet1*-+
+      DOCKER_COMPOSE_YML_LOCATION: ${PWD}
+    container_name: MySQL-shared
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8089:80"
+    environment:
+      PMA_HOST: MySQL-shared
+      MYSQL_ROOT_PASSWORD: Popokatepet1*-+
+      DOCKER_COMPOSE_YML_LOCATION: ${PWD}
+      UPLOAD_LIMIT: 300M
+    container_name: MySQL-Phpmyadmin-shared
+
+volumes:     
+   db_data: {}
+
+networks:
+    default:
+        external:
+            name: spojenehlavycz9cz_default
+

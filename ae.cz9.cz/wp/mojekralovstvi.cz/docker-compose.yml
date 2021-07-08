@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8007:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: MySQL-shared:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: mojekralovstvi
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    container_name: mojekralovstvi_wp
+
+networks:
+    default:
+        external:
+            name: spojenehlavycz9cz_default
+#networks:
+#  spojenehlavycz9cz_default:
+#    driver: bridge
+

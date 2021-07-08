@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+# nejprve se koukni na netstat -pantu a dej prvni dalsi nepouzitou
+      - "8016:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: MySQL-shared:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+# Zmenit nazev databaze - nejprve je ji treba udelat na cz9.cz:8089
+      WORDPRESS_DB_NAME: apex
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+# zmenit nazev kontejneru
+    container_name: zdravotnipotreby-apex_wp
+
+networks:
+    default:
+        external:
+# todle nemenit !!!! je to ve stejnem prostoru jako spojene hlavy, je treba si na to zvyknout
+            name: spojenehlavycz9cz_default
+
+# a nakonec nezapomen dat do /etc/nginx/sites-enabled novy server a udelat nginx -t a kdyz je vse ok, tak nginx -s reload
