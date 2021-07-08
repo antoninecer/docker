@@ -1,0 +1,44 @@
+server {
+
+
+        listen 80;
+	server_name restauraceumlynare.cz restauraceumlynare.cz9.cz www.restauraceumlynare.cz;
+
+	location / {
+	    proxy_pass http://127.0.0.1:8019;
+	    proxy_buffering on;
+	    proxy_buffers 12 12k;
+	    proxy_redirect off;
+
+	    proxy_set_header X-Real-IP $remote_addr;
+	    proxy_set_header X-Forwarded-For $remote_addr;
+	    proxy_set_header Host $host;
+	}
+
+
+
+}
+
+server {
+
+    listen 443 ssl; # managed by Certbot
+    
+    server_name restauraceumlynare.cz restauraceumlynare.cz9.cz www.restauraceumlynare.cz;
+    ssl_certificate /etc/letsencrypt/live/restauraceumlynare.cz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/restauraceumlynare.cz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+	location / {
+	    proxy_pass http://127.0.0.1:8019;
+	    proxy_buffering on;
+	    proxy_buffers 12 12k;
+	    proxy_redirect off;
+
+	    proxy_set_header X-Real-IP $remote_addr;
+	    proxy_set_header X-Forwarded-For $remote_addr;
+	    proxy_set_header Host $host;
+	}
+
+}
+
